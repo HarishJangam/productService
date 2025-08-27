@@ -26,7 +26,7 @@ public class FakestoreProductServiceImp implements ProductService {
         this.restTemplate = restTemplate;
     }
 
-    private Product fakeStoreToProduct(FakeStroreProductServiceDto productDto ){
+    private ResponseEntity<Product> fakeStoreToProduct(FakeStroreProductServiceDto productDto ){
         Product product = new Product();
         product.setId(productDto.getId());
         product.setDescription(productDto.getDescription());
@@ -36,11 +36,11 @@ public class FakestoreProductServiceImp implements ProductService {
         product.setCategory(new Category());
         product.getCategory().setName(productDto.getCategory());
 //        product.getCategory().setId(productDto.getId());
-        return product;
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @Override
-    public Product getSingleProduct(Long id) {
+    public ResponseEntity<Product> getSingleProduct(Long id) {
         FullApiResonse res=restTemplate.getForObject(
                 "https://fakestoreapi.in/api/products/"+id,
                 FullApiResonse.class
@@ -55,7 +55,7 @@ public class FakestoreProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public ResponseEntity<List<Product>> getAllProducts() {
         GetAllProductDto res= restTemplate.getForObject(
                 "https://fakestoreapi.in/api/products",
                 GetAllProductDto.class);
@@ -64,11 +64,11 @@ public class FakestoreProductServiceImp implements ProductService {
         }
         List<Product> products=new ArrayList<>();
 
-        for(FakeStroreProductServiceDto prodRes : res.getProducts()){
+//        for(FakeStroreProductServiceDto prodRes : res.getProducts()){
 //            FakeStroreProductServiceDto productDto=res.getProduct();
-            products.add(fakeStoreToProduct(prodRes));
-        }
-        return products;
+//            products.add(fakeStoreToProduct(prodRes));
+//        }
+        return new ResponseEntity<>(products,HttpStatus.OK);
     }
 
     @Override
@@ -91,6 +91,11 @@ public class FakestoreProductServiceImp implements ProductService {
         );
 
 //        return response.getBody();
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteProduct(Long id) {
         return null;
     }
 }

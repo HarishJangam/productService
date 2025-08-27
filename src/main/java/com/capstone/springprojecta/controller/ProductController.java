@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -26,20 +27,21 @@ public class ProductController {
         this.productService = productService;
     }
     @GetMapping()
-    public ResponseEntity<List<Product>> getAllProducts(@RequestHeader("AuthenticationToken") String token) {
-            if(authenticationCommons.validateToken(token)==null){
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
-        return new ResponseEntity<>(productService.getAllProducts(),HttpStatus.OK);
+    public ResponseEntity<List<Product>> getAllProducts() { //@RequestHeader("AuthenticationToken") String token
+//            if(authenticationCommons.validateToken(token)==null){
+//                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//            }
+//        return new ResponseEntity<>(productService.getAllProducts(),HttpStatus.OK);
+        return productService.getAllProducts();
 //        return null;
     }
 
     @GetMapping("/{id}") // this id and  PathVariable id names should be if parameter different also fine.
-    public  Product getSingleProduct(@PathVariable("id") Long idValue) {
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long idValue) {
         return productService.getSingleProduct(idValue);
     }
 
-    @PostMapping()
+    @PostMapping("/addNewProduct")
     public ResponseEntity<Product> addNewProduct(@RequestBody Product newProduct) {
         return productService.addNewProduct(newProduct);
 //        return new Product();
@@ -57,6 +59,6 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable("id") Long id) {
-
+        productService.deleteProduct(id);
     }
 }
