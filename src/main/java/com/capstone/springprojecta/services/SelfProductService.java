@@ -1,5 +1,6 @@
 package com.capstone.springprojecta.services;
 
+import com.capstone.springprojecta.exceptions.ProductNotFoundException;
 import com.capstone.springprojecta.models.Category;
 import com.capstone.springprojecta.models.Product;
 import com.capstone.springprojecta.repositories.CategoryRepository;
@@ -24,12 +25,18 @@ public class SelfProductService implements ProductService{
 
 
     @Override
-    public ResponseEntity<Product> getSingleProduct(Long id) {
-        Optional<Product> product=productRepository.findById(id);
-        if(product.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(product.get(), HttpStatus.OK);
+    public ResponseEntity<Product> getSingleProduct(Long id)  {
+//        Optional<Product> product=productRepository.findById(id);
+//        if(product.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(product.get(), HttpStatus.OK);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ProductNotFoundException(
+                                "Product not found with id: " + id));
+
+        return ResponseEntity.ok(product);
     }
 
     @Override
