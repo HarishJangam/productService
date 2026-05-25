@@ -43,22 +43,20 @@ public class SelfProductService implements ProductService{
 
     @Override
     public ResponseEntity<Product> addNewProduct(Product prod) {
-        Optional<Category> category=categoryRepository.findById(prod.getCategory().getId());
-        if(category.isPresent()){
+        String catName = prod.getCategory().getName();
+        Optional<Category> category=categoryRepository.findByName(catName);
+        if(category != null && !category.isEmpty()){
             prod.setCategory(category.get());
             Product savedProduct=productRepository.save(prod);
             return ResponseEntity.status(201).body(savedProduct);
         }
         else{
             Category cat=new Category();
-            cat.setName(prod.getCategory().getName());
-            categoryRepository.save(cat);
-            prod.setCategory(categoryRepository.findByName(cat.getName()).get());
+            cat.setName(catName);
+            prod.setCategory( categoryRepository.save(cat));
             Product savedProduct=productRepository.save(prod);
             return ResponseEntity.status(201).body(savedProduct);
         }
-
-//        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Override

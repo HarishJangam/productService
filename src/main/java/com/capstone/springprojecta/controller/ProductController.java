@@ -32,6 +32,7 @@ public class ProductController {
 //                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 //            }
 //        return new ResponseEntity<>(productService.getAllProducts(),HttpStatus.OK);
+        System.out.println("get all produtcs ....");
         return productService.getAllProducts();
 //        return null;
     }
