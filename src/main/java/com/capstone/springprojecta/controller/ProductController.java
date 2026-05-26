@@ -63,3 +63,13 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 }
+//
+//{
+//        "tittle": "iphone 15 pro max",
+//        "price": 140000,
+//        "description": "best iphone ever",
+//        "category": {
+//        "name": "phone"
+//        },
+//        "imageUrl": "http://example.com"
+//        }
