@@ -49,8 +49,9 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public Product updateProduct(@PathVariable("id") Long id ,@RequestBody Product newProduct) {
-        return new Product();
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id ,@RequestBody Product newProduct) {
+        Product prod=productService.updateProduct(id,newProduct);
+        return new ResponseEntity<>(prod, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -63,3 +64,13 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 }
+//
+//{
+//        "tittle": "iphone 15 pro max",
+//        "price": 140000,
+//        "description": "best iphone ever",
+//        "category": {
+//        "name": "phone"
+//        },
+//        "imageUrl": "http://example.com"
+//        }

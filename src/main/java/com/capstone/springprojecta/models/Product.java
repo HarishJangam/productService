@@ -19,8 +19,11 @@ public class Product extends BaseModel{
     private String tittle;
     private double price;
 
+//    @ManyToOne
+//    @JsonBackReference
+//    private Category category;
     @ManyToOne
-    @JsonBackReference
+    @JoinColumn(name = "category_id")
     private Category category;
     private String description;
     private String imageUrl;

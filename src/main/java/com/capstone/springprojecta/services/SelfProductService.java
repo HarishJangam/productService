@@ -75,4 +75,23 @@ public class SelfProductService implements ProductService{
         productRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Override
+    public Product updateProduct(Long id , Product newProduct) {
+        Product oldProduct = productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ProductNotFoundException("Product not found"));
+        oldProduct.setTittle(newProduct.getTittle());
+        oldProduct.setDescription(newProduct.getDescription());
+        oldProduct.setPrice(newProduct.getPrice());
+        oldProduct.setImageUrl(newProduct.getImageUrl());
+        if (newProduct.getCategory() != null) {
+            oldProduct.setCategory(newProduct.getCategory());
+        }
+//        return productRepository.save(oldProduct);
+        return productRepository.save(oldProduct);
+
+    }
+
+
 }
