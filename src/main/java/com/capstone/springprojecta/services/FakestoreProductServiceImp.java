@@ -95,6 +95,11 @@ public class FakestoreProductServiceImp implements ProductService {
     }
 
     @Override
+    public Product updateProduct(Long id, Product newProduct) {
+        return null;
+    }
+
+    @Override
     public ResponseEntity<Void> deleteProduct(Long id) {
         return null;
     }
