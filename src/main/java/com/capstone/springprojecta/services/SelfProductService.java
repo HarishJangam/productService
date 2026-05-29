@@ -6,6 +6,7 @@ import com.capstone.springprojecta.models.Product;
 import com.capstone.springprojecta.repositories.CategoryRepository;
 import com.capstone.springprojecta.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Primary
 @Service("SelfProductService")
 public class SelfProductService implements ProductService{
     ProductRepository productRepository;
