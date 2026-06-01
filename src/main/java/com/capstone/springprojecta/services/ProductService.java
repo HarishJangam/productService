@@ -11,4 +11,5 @@ public interface ProductService {
      ResponseEntity<Product> addNewProduct(Product prod);
      ResponseEntity<Void> deleteProduct(Long id);
      Product updateProduct(Long id , Product newProduct);
+     
 }
