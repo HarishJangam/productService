@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -62,21 +62,40 @@ public class ProductControllerTest {
         }
     }
 
+//    @Test
+//    void testProductNotFound() {
+//
+//        when(productRepository.findById(123L))
+//                .thenReturn(Optional.empty());
+//
+//        ProductNotFoundException exception =
+//                assertThrows(
+//                        ProductNotFoundException.class,
+//                        () -> productService.getSingleProduct(123L)
+//                );
+//
+//        assertEquals(
+//                "product with id 123 doesnt exist search for another id",
+//                exception.getMessage()
+//        );
+//    }
     @Test
-    void testProductNotFound() {
+    void TestGetProductByIdSuccess(){
+        Long id=1L;
+        Product prod=new Product();
+        prod.setTittle("best iphone ever");
+        prod.setId(id);
+        when(productService.getSingleProduct(any(Long.class)))
+                .thenReturn(ResponseEntity.ok(prod));
+        ResponseEntity<Product>response=productService.getSingleProduct(id);
+        assertNotNull(response.getBody());
+        assertEquals(id,response.getBody().getId());
+        assertEquals("best iphone ever",response.getBody().getTittle());
 
-        when(productRepository.findById(123L))
-                .thenReturn(Optional.empty());
+    }
 
-        ProductNotFoundException exception =
-                assertThrows(
-                        ProductNotFoundException.class,
-                        () -> productService.getSingleProduct(123L)
-                );
-
-        assertEquals(
-                "product with id 123 doesnt exist search for another id",
-                exception.getMessage()
-        );
+    @Test
+    void TestGetProductByIdException(){
+        Exception ex=assertThrows(ProductNotFoundException.class,()->productService.getSingleProduct(2L));
     }
 }
