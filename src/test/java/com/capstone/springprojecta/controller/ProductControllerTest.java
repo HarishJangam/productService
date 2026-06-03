@@ -5,11 +5,15 @@ import com.capstone.springprojecta.models.Product;
 import com.capstone.springprojecta.repositories.ProductRepository;
 import com.capstone.springprojecta.services.ProductService;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import javax.sound.sampled.Port;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class ProductControllerTest {
@@ -31,6 +34,10 @@ public class ProductControllerTest {
 
     @MockitoBean
     private ProductService productService;
+
+    @Captor
+    private ArgumentCaptor<Long>idCaptor;
+
     @Test
     void testProductsSameAsService(){
         List<Product> mockProd=new ArrayList<>();
@@ -87,7 +94,7 @@ public class ProductControllerTest {
         prod.setId(id);
         when(productService.getSingleProduct(any(Long.class)))
                 .thenReturn(ResponseEntity.ok(prod));
-        ResponseEntity<Product>response=productService.getSingleProduct(id);
+        ResponseEntity<Product>response=productController.getSingleProduct(id);
         assertNotNull(response.getBody());
         assertEquals(id,response.getBody().getId());
         assertEquals("best iphone ever",response.getBody().getTittle());
@@ -96,6 +103,24 @@ public class ProductControllerTest {
 
     @Test
     void TestGetProductByIdException(){
-        Exception ex=assertThrows(ProductNotFoundException.class,()->productService.getSingleProduct(2L));
+        Exception ex=assertThrows(ProductNotFoundException.class,()->productController.getSingleProduct(2L));
     }
+
+
+//    verifying path variable passing correctly or not
+    @Test
+    void TestWeatherPathVariableMatchingOrNot(){
+        Long id=1L;
+        Product product=new Product();
+        product.setId(id);
+        product.setTittle("best iphone ever");
+        when(productService.getSingleProduct(id))
+                .thenReturn(ResponseEntity.ok(product));
+        ResponseEntity<Product> response =
+                productController.getSingleProduct(id);
+        verify(productService).getSingleProduct(idCaptor.capture());
+        assertEquals(id,idCaptor.getValue());
+    }
+
+
 }
