@@ -68,24 +68,6 @@ public class ProductControllerTest {
             assertEquals(mockProd.get(i).getTittle(),response.get(i).getTittle());
         }
     }
-
-//    @Test
-//    void testProductNotFound() {
-//
-//        when(productRepository.findById(123L))
-//                .thenReturn(Optional.empty());
-//
-//        ProductNotFoundException exception =
-//                assertThrows(
-//                        ProductNotFoundException.class,
-//                        () -> productService.getSingleProduct(123L)
-//                );
-//
-//        assertEquals(
-//                "product with id 123 doesnt exist search for another id",
-//                exception.getMessage()
-//        );
-//    }
     @Test
     void TestGetProductByIdSuccess(){
         Long id=1L;
